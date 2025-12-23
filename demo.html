@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revnotech Research | Premier Market Research & Data Analytics</title>
+    <meta name="description" content="Revnotech Research - Transforming data into strategic intelligence. Specialized in healthcare, consumer, and opinion research based in Lucknow, India.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS (CDN for standalone file) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            800: '#075985',
+                            900: '#0c4a6e', // Corporate Blue
+                        },
+                        secondary: {
+                            500: '#10b981', // Teal/Green for data/growth
+                            600: '#059669',
+                        },
+                        dark: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for Animations and Utilities -->
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Scroll Reveal Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Glassmorphism for Header */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #10b981;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            right: 30px;
+            bottom: 30px;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        #toast.show {
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Map Container */
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-dark-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Toast Notification -->
+    <div id="toast"><i class="fas fa-check-circle mr-2"></i> Message sent successfully!</div>
+
+    <!-- Legal Modals (Privacy & Terms) -->
+    <div id="legalModal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-white dark:bg-slate-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+                <div class="bg-white dark:bg-slate-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-2xl leading-6 font-bold text-primary-900 dark:text-white mb-4" id="modal-title">Legal Information</h3>
+                            <div class="mt-2 text-sm text-gray-600 dark:text-gray-300 space-y-4 max-h-96 overflow-y-auto pr-2" id="modal-content">
+                                <!-- Content injected via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-slate-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-primary-900 text-base font-medium text-white hover:bg-primary-800 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <header id="navbar" class="fixed w-full top-0 z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary-900 to-primary-500 rounded-lg flex items-center justify-center text-white mr-2 shadow-lg">
+                        <span class="font-bold text-xl">R</span>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl tracking-tighter text-primary-900 dark:text-white leading-none">REVNOTECH</h1>
+                        <p class="text-[10px] text-gray-500 dark:text-gray-400 font-medium tracking-widest uppercase">Research & Analytics</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-sm">Home</a>
+                    <a href="#about" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-sm">About Us</a>
+                    <a href="#services" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-sm">Services</a>
+                    <a href="#methodology" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors text-sm">Methodology</a>
+                    <a href="#contact" class="px-5 py-2.5 rounded-full bg-primary-900 text-white text-sm font-medium hover:bg-primary-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Contact Us</a>
+                </nav>
+
+                <!-- Mobile & Theme Controls -->
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="p-2 rounded-full text-gray-500 hover:bg-gray-200 dark:hover:bg-slate-700 dark:text-gray-400 focus:outline-none transition-colors">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:inline"></i>
+                    </button>
+                    
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-btn" class="text-gray-600 dark:text-gray-300 hover:text-primary-600 focus:outline-none">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 shadow-xl absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="#home" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-slate-800">Home</a>
+                <a href="#about" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-slate-800">About Us</a>
+                <a href="#services" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-slate-800">Services</a>
+                <a href="#industries" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-slate-800">Industries</a>
+                <a href="#methodology" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 hover:bg-gray-50 dark:hover:bg-slate-800">Methodology</a>
+                <a href="#contact" class="block px-3 py-3 rounded-md text-base font-medium text-primary-600 bg-primary-50 dark:bg-slate-800 dark:text-primary-400">Contact Us</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero Section -->
+        <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 z-0">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-white dark:from-dark-900 dark:to-slate-900 opacity-80"></div>
+                <img src="https://picsum.photos/seed/analytics/1920/1080" alt="Data Analytics Background" class="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-10 mix-blend-multiply dark:mix-blend-screen">
+                <!-- Decorative blobs -->
+                <div class="absolute top-20 right-10 w-72 h-72 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                <div class="absolute top-40 left-10 w-72 h-72 bg-secondary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10 text-center">
+                <div class="inline-flex items-center px-3 py-1 rounded-full border border-primary-200 bg-primary-50 text-primary-800 text-xs font-semibold uppercase tracking-wide dark:bg-slate-800 dark:border-slate-700 dark:text-primary-400 mb-6 reveal">
+                    <span class="w-2 h-2 rounded-full bg-secondary-500 mr-2 animate-pulse"></span>
+                    Empowering Decisions with Data
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-primary-900 dark:text-white mb-6 reveal">
+                    Transforming Data into <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-500">Strategic Intelligence</span>
+                </h1>
+                <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-400 mb-10 reveal">
+                    Revnotech Research provides world-class market research and data analytics solutions based in Lucknow. We combine accuracy, transparency, and innovation to drive your business growth.
+                </p>
+                <div class="flex justify-center gap-4 reveal">
+                    <a href="#services" class="px-8 py-3 rounded-lg bg-primary-900 text-white font-semibold hover:bg-primary-800 transition-all shadow-lg hover:shadow-primary-500/30">
+                        Our Services
+                    </a>
+                    <a href="#contact" class="px-8 py-3 rounded-lg bg-white text-primary-900 border border-gray-200 font-semibold hover:bg-gray-50 transition-all dark:bg-slate-800 dark:text-white dark:border-slate-700">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 bg-white dark:bg-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div class="relative reveal-left">
+                        <div class="absolute -top-4 -left-4 w-24 h-24 bg-secondary-500 rounded-tl-3xl opacity-20"></div>
+                        <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-primary-500 rounded-br-3xl opacity-20"></div>
+                        <img src="https://picsum.photos/seed/meeting/800/600" alt="Revnotech Team Meeting" class="rounded-lg shadow-2xl relative z-10 w-full object-cover">
+                        <div class="absolute bottom-6 left-6 bg-white dark:bg-slate-900 p-4 rounded-lg shadow-lg z-20 max-w-xs">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-primary-100 p-2 rounded-full text-primary-600 dark:bg-slate-800 dark:text-primary-400">
+                                    <i class="fas fa-chart-line text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Years of Experience</p>
+                                    <p class="font-bold text-xl text-gray-900 dark:text-white">Trusted Expertise</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal-right">
+                        <h2 class="text-primary-600 font-bold tracking-wide uppercase text-sm mb-2">About Revnotech Research</h2>
+                        <h3 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">Bridging the Gap Between Data and Decisions</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-lg mb-6 leading-relaxed">
+                            Headquartered in <strong>Lucknow, Uttar Pradesh</strong>, Revnotech Research is a dedicated market research and data analytics firm. We believe that data is not just numbers—it's the narrative of your market.
+                        </p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                            With a client-centric approach, we dive deep into consumer behavior, market trends, and industry shifts to deliver insights that are actionable, accurate, and transparent. Whether you are in Pharma, FMCG, or Media, our tailored solutions help you stay ahead of the curve.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-secondary-500 mt-1 mr-3"></i>
+                                <span class="font-medium text-gray-800 dark:text-gray-200">Accuracy & Precision</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-secondary-500 mt-1 mr-3"></i>
+                                <span class="font-medium text-gray-800 dark:text-gray-200">Ethical Research Practices</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-secondary-500 mt-1 mr-3"></i>
+                                <span class="font-medium text-gray-800 dark:text-gray-200">Innovative Tech Integration</span>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-secondary-500 mt-1 mr-3"></i>
+                                <span class="font-medium text-gray-800 dark:text-gray-200">Tailored Client Solutions</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 bg-gray-50 dark:bg-dark-900 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                    <h2 class="text-primary-600 font-bold tracking-wide uppercase text-sm mb-2">Our Expertise</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">Comprehensive Research Solutions</h3>
+                    <p class="text-gray-600 dark:text-gray-400">We offer specialized services designed to uncover opportunities and mitigate risks.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Service 1 -->
+                    <div class="group bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-transparent hover:border-primary-100 dark:hover:border-slate-700 reveal">
+                        <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Healthcare & Pharma Research</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            In-depth analysis for healthcare providers and pharmaceutical companies. We cover market sizing, patient journey mapping, and KOL interviews to navigate the complex medical landscape.
+                        </p>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="group bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-transparent hover:border-primary-100 dark:hover:border-slate-700 reveal" style="transition-delay: 100ms;">
+                        <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Brand & Consumer Research</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Understanding the 'Why' behind the 'Buy'. We conduct brand equity studies, concept testing, and usage & attitude studies to position your brand effectively in the consumer's mind.
+                        </p>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="group bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-transparent hover:border-primary-100 dark:hover:border-slate-700 reveal" style="transition-delay: 200ms;">
+                        <div class="w-14 h-14 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Media & Opinion Research</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            gauging public sentiment and media consumption habits. Our opinion polls and media tracking services help in crafting messages that resonate with your target audience.
+                        </p>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="group bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-transparent hover:border-primary-100 dark:hover:border-slate-700 reveal">
+                        <div class="w-14 h-14 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-smile"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Loyalty & Customer Experience</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Turn customers into advocates. We measure NPS (Net Promoter Score), CSAT (Customer Satisfaction), and identify friction points in the customer journey to enhance loyalty.
+                        </p>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="group bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-transparent hover:border-primary-100 dark:hover:border-slate-700 reveal" style="transition-delay: 100ms;">
+                        <div class="w-14 h-14 bg-teal-100 text-teal-600 rounded-lg flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Survey-based Data Collection</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                            Robust fieldwork capabilities. We utilize CATI, CAWI, and Face-to-Face methodologies to gather high-quality data from diverse demographics across India.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industries We Serve -->
+        <section id="industries" class="py-20 bg-white dark:bg-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Industries We Serve</h3>
+                    <div class="w-20 h-1 bg-primary-500 mx-auto mt-4 rounded-full"></div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="p-6 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group reveal">
+                        <i class="fas fa-pills text-4xl text-blue-400 mb-4 group-hover:scale-110 transition-transform"></i>
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">Pharma & Healthcare</p>
+                    </div>
+                    <div class="p-6 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group reveal" style="transition-delay: 50ms;">
+                        <i class="fas fa-shopping-cart text-4xl text-pink-400 mb-4 group-hover:scale-110 transition-transform"></i>
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">Retail & FMCG</p>
+                    </div>
+                    <div class="p-6 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group reveal" style="transition-delay: 100ms;">
+                        <i class="fas fa-tv text-4xl text-purple-400 mb-4 group-hover:scale-110 transition-transform"></i>
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">Media & Entertainment</p>
+                    </div>
+                    <div class="p-6 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group reveal" style="transition-delay: 150ms;">
+                        <i class="fas fa-laptop-code text-4xl text-teal-400 mb-4 group-hover:scale-110 transition-transform"></i>
+                        <p class="font-semibold text-gray-700 dark:text-gray-200">IT & Telecommunications</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methodology Section -->
+        <section id="methodology" class="py-20 bg-primary-900 text-white relative overflow-hidden">
+            <!-- Abstract Background Shapes -->
+            <div class="absolute top-0 left-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary-500 opacity-10 rounded-full translate-x-1/3 translate-y-1/3"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-primary-200 font-bold tracking-wide uppercase text-sm mb-2">Our Process</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold mb-4">Research Methodology</h3>
+                    <p class="text-primary-100 max-w-2xl mx-auto">A structured, scientific approach ensures data integrity and actionable insights.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Step 1 -->
+                    <div class="relative reveal">
+                        <div class="bg-primary-800 p-6 rounded-lg border border-primary-700 h-full">
+                            <div class="text-5xl font-bold text-primary-600 mb-4 opacity-50">01</div>
+                            <h4 class="text-xl font-bold mb-2">Design & Planning</h4>
+                            <p class="text-sm text-primary-100">Defining objectives, choosing the right methodology (Qualitative/Quantitative), and designing robust instruments.</p>
+                        </div>
+                        <div class="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary-600 text-2xl z-10"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative reveal" style="transition-delay: 100ms;">
+                        <div class="bg-primary-800 p-6 rounded-lg border border-primary-700 h-full">
+                            <div class="text-5xl font-bold text-primary-600 mb-4 opacity-50">02</div>
+                            <h4 class="text-xl font-bold mb-2">Data Collection</h4>
+                            <p class="text-sm text-primary-100">Execution of fieldwork using advanced digital tools and validated panelists for high response rates.</p>
+                        </div>
+                        <div class="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary-600 text-2xl z-10"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative reveal" style="transition-delay: 200ms;">
+                        <div class="bg-primary-800 p-6 rounded-lg border border-primary-700 h-full">
+                            <div class="text-5xl font-bold text-primary-600 mb-4 opacity-50">03</div>
+                            <h4 class="text-xl font-bold mb-2">Analysis & Processing</h4>
+                            <p class="text-sm text-primary-100">Cleaning data, statistical analysis, and identifying patterns using SPSS, Python, and Tableau.</p>
+                        </div>
+                        <div class="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary-600 text-2xl z-10"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative reveal" style="transition-delay: 300ms;">
+                        <div class="bg-primary-800 p-6 rounded-lg border border-primary-700 h-full">
+                            <div class="text-5xl font-bold text-primary-600 mb-4 opacity-50">04</div>
+                            <h4 class="text-xl font-bold mb-2">Reporting & Insights</h4>
+                            <p class="text-sm text-primary-100">Delivering comprehensive reports with actionable recommendations and strategic consulting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us (Stats) -->
+        <section id="why-us" class="py-20 bg-gray-50 dark:bg-dark-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden reveal">
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <div class="p-10 lg:p-16 flex flex-col justify-center">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Why Partner with Revnotech?</h2>
+                            <p class="text-gray-600 dark:text-gray-300 mb-8">
+                                In a data-driven world, you need a partner who understands the nuance of the Indian market. We don't just provide data; we provide clarity.
+                            </p>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                                        <i class="fas fa-check text-green-600 text-xs"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-700 dark:text-gray-300"><strong>Local Expertise, Global Standards:</strong> Deep understanding of UP and Indian demographics.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                                        <i class="fas fa-check text-green-600 text-xs"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-700 dark:text-gray-300"><strong>Speed & Agility:</strong> Quick turnaround times without compromising quality.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                                        <i class="fas fa-check text-green-600 text-xs"></i>
+                                    </div>
+                                    <span class="ml-3 text-gray-700 dark:text-gray-300"><strong>Data Security:</strong> Strict adherence to data privacy protocols.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-primary-900 p-10 lg:p-16 flex flex-col justify-center items-center text-center text-white relative overflow-hidden">
+                            <!-- Background Pattern -->
+                            <div class="absolute top-0 right-0 p-10 opacity-10">
+                                <i class="fas fa-chart-pie text-9xl"></i>
+                            </div>
+                            
+                            <div class="relative z-10 w-full">
+                                <div class="mb-10">
+                                    <div class="text-5xl font-bold text-secondary-400 mb-2 counter" data-target="500">0</div>
+                                    <p class="text-primary-100 font-medium">Projects Completed</p>
+                                </div>
+                                <div class="mb-10">
+                                    <div class="text-5xl font-bold text-secondary-400 mb-2 counter" data-target="120">0</div>
+                                    <p class="text-primary-100 font-medium">Happy Clients</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="text-3xl font-bold text-white mb-1">100%</div>
+                                        <p class="text-xs text-primary-200 uppercase tracking-widest">Accuracy Focus</p>
+                                    </div>
+                                    <div>
+                                        <div class="text-3xl font-bold text-white mb-1">24/7</div>
+                                        <p class="text-xs text-primary-200 uppercase tracking-widest">Support</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-white dark:bg-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Info & Map -->
+                    <div class="reveal-left">
+                        <h2 class="text-primary-600 font-bold tracking-wide uppercase text-sm mb-2">Get in Touch</h2>
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Let's Discuss Your Research Needs</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-8">
+                            Ready to unlock the power of data? Contact us for a consultation or quote.
+                        </p>
+
+                        <div class="space-y-6 mb-8">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <span class="flex items-center justify-center h-10 w-10 rounded-full bg-primary-100 dark:bg-slate-700 text-primary-600 dark:text-primary-400">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </span>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Office Address</p>
+                                    <p class="mt-1 text-base text-gray-500 dark:text-gray-400">
+                                        47 A, Pandey Villa,<br>Bharat Nagar, Lucknow – 226021,<br>Uttar Pradesh, India
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <span class="flex items-center justify-center h-10 w-10 rounded-full bg-primary-100 dark:bg-slate-700 text-primary-600 dark:text-primary-400">
+                                        <i class="fas fa-phone-alt"></i>
+                                    </span>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Phone</p>
+                                    <p class="mt-1 text-base text-gray-500 dark:text-gray-400">+91 7007124727</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <span class="flex items-center justify-center h-10 w-10 rounded-full bg-primary-100 dark:bg-slate-700 text-primary-600 dark:text-primary-400">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-lg leading-6 font-medium text-gray-900 dark:text-white">Email</p>
+                                    <p class="mt-1 text-base text-gray-500 dark:text-gray-400">info@revnotechresearch.com</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Google Map Embed -->
+                        <div class="map-container h-64 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-slate-700">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.876263423023!2d80.946!3d26.846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfdd4c03f488f%3A0x6e616a6c6e616a6c!2sBharat%20Nagar%2C%20Lucknow%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin" 
+                                allowfullscreen="" 
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Revnotech Research Location">
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="bg-gray-50 dark:bg-slate-900 rounded-2xl p-8 shadow-lg reveal-right">
+                        <form id="contactForm" onsubmit="handleFormSubmit(event)">
+                            <div class="grid grid-cols-1 gap-6">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+                                    <input type="text" name="name" id="name" required class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-colors" placeholder="John Doe">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+                                    <input type="email" name="email" id="email" required class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-colors" placeholder="john@company.com">
+                                </div>
+                                <div>
+                                    <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Subject</label>
+                                    <select id="subject" name="subject" class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-colors">
+                                        <option>General Inquiry</option>
+                                        <option>Request for Proposal</option>
+                                        <option>Healthcare Research</option>
+                                        <option>Consumer Research</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+                                    <textarea id="message" name="message" rows="4" required class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 transition-colors" placeholder="Tell us about your project..."></textarea>
+                                </div>
+                                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-900 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900 transition-all transform hover:scale-[1.01]">
+                                    Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center mb-6">
+                        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-md flex items-center justify-center text-white mr-2">
+                            <span class="font-bold">R</span>
+                        </div>
+                        <h2 class="text-2xl font-bold tracking-tighter">Revnotech</h2>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Empowering businesses with accurate market intelligence and data analytics. Based in Lucknow, serving clients globally.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-linkedin text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Company</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#home" class="hover:text-primary-400 transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-primary-400 transition-colors">About Us</a></li>
+                        <li><a href="#services" class="hover:text-primary-400 transition-colors">Services</a></li>
+                        <li><a href="#contact" class="hover:text-primary-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Services</h3>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#services" class="hover:text-primary-400 transition-colors">Healthcare Research</a></li>
+                        <li><a href="#services" class="hover:text-primary-400 transition-colors">Consumer Insights</a></li>
+                        <li><a href="#services" class="hover:text-primary-400 transition-colors">Data Analytics</a></li>
+                        <li><a href="#services" class="hover:text-primary-400 transition-colors">Fieldwork Services</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Contact Us</h3>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary-500"></i>
+                            <span>47 A, Pandey Villa, Bharat Nagar,<br>Lucknow – 226021, UP, India</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-3 text-primary-500"></i>
+                            <span>+91 7007124727</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-primary-500"></i>
+                            <span>info@revnotechresearch.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                <p>&copy; 2023 Revnotech Research. All rights reserved.</p>
+                <div class="mt-4 md:mt-0 space-x-6">
+                    <a href="javascript:void(0)" onclick="openModal('privacy')" class="hover:text-gray-300 transition-colors">Privacy Policy</a>
+                    <a href="javascript:void(0)" onclick="openModal('terms')" class="hover:text-gray-300 transition-colors">Terms & Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        // --- Dark Mode Logic ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check Local Storage or System Preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            if (htmlElement.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        });
+
+        // --- Mobile Menu Logic ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // --- Scroll Animations (Intersection Observer) ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Trigger counters if it's the counter section
+                    if (entry.target.querySelector('.counter')) {
+                        startCounters();
+                    }
+                    
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Animated Counters ---
+        let countersStarted = false;
+        function startCounters() {
+            if (countersStarted) return;
+            countersStarted = true;
+
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // 60fps
+
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current) + "+";
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.innerText = target + "+";
+                    }
+                };
+                updateCounter();
+            });
+        }
+
+        // --- Contact Form Handling ---
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // Simulate API call
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = 'Sending...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Show Success Toast
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                
+                // Reset Form
+                e.target.reset();
+                btn.innerText = originalText;
+                btn.disabled = false;
+
+                // Hide Toast after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }, 1500);
+        }
+
+        // --- Legal Modal Logic ---
+        const legalContent = {
+            'privacy': `
+                <h4 class="font-bold text-lg mb-2">Privacy Policy</h4>
+                <p>At Revnotech Research, we take your privacy seriously. We collect only necessary information to provide our market research services.</p>
+                <ul class="list-disc pl-5 mt-2 space-y-1">
+                    <li>We do not sell your personal data to third parties.</li>
+                    <li>All research data is anonymized and aggregated.</li>
+                    <li>We use cookies to improve user experience on our website.</li>
+                    <li>Contact us at info@revnotechresearch.com for privacy-related queries.</li>
+                </ul>
+            `,
+            'terms': `
+                <h4 class="font-bold text-lg mb-2">Terms & Conditions</h4>
+                <p>By using this website, you agree to the following terms:</p>
+                <ul class="list-disc pl-5 mt-2 space-y-1">
+                    <li>All content on this site is the property of Revnotech Research.</li>
+                    <li>The information provided is for general informational purposes only.</li>
+                    <li>We reserve the right to modify these terms at any time without prior notice.</li>
+                    <li>Unauthorized use of this site may give rise to a claim for damages.</li>
+                </ul>
+            `
+        };
+
+        const modal = document.getElementById('legalModal');
+        const modalContentDiv = document.getElementById('modal-content');
+
+        function openModal(type) {
+            modalContentDiv.innerHTML = legalContent[type];
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+        // --- Navbar Scroll Effect ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 10) {
+                nav.classList.add('shadow-md');
+            } else {
+                nav.classList.remove('shadow-md');
+            }
+        });
+
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revnotech Research | Market Research & Data Analytics</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#0f766e',
+                        accent: '#059669',
+                        dark: '#111827',
+                        light: '#f8fafc'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="font-sans bg-light dark:bg-dark text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Header/Navigation -->
+    <header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">R</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-primary dark:text-white">Revnotech Research</h1>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Market Research & Data Analytics</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="font-medium text-primary dark:text-blue-300 hover:text-accent dark:hover:text-accent transition">Home</a>
+                    <a href="about.html" class="font-medium hover:text-accent dark:hover:text-accent transition">About Us</a>
+                    <a href="services.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Services</a>
+                    <a href="industries.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Industries</a>
+                    <a href="methodology.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Methodology</a>
+                    <a href="why-choose-us.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Why Choose Us</a>
+                    <a href="contact.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Contact</a>
+                </nav>
+
+                <!-- Theme Toggle & Mobile Menu Button -->
+                <div class="flex items-center space-x-4">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                        <i class="fas fa-moon text-gray-800 dark:text-yellow-300"></i>
+                        <i class="fas fa-sun text-yellow-500 dark:text-gray-400 hidden"></i>
+                    </button>
+                    
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                        <i class="fas fa-bars text-gray-800 dark:text-gray-200"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-menu" class="hidden lg:hidden mt-4 pb-2 border-t dark:border-gray-700">
+                <div class="flex flex-col space-y-3 pt-4">
+                    <a href="index.html" class="font-medium text-primary dark:text-blue-300 hover:text-accent dark:hover:text-accent transition">Home</a>
+                    <a href="about.html" class="font-medium hover:text-accent dark:hover:text-accent transition">About Us</a>
+                    <a href="services.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Services</a>
+                    <a href="industries.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Industries</a>
+                    <a href="methodology.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Methodology</a>
+                    <a href="why-choose-us.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Why Choose Us</a>
+                    <a href="contact.html" class="font-medium hover:text-accent dark:hover:text-accent transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">R</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">Revnotech Research</h3>
+                            <p class="text-sm text-gray-400">Market Research & Data Analytics</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 mb-6">Providing accurate, transparent, and innovative research solutions to help businesses make informed decisions.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="services.html" class="text-gray-400 hover:text-white transition">Services</a></li>
+                        <li><a href="industries.html" class="text-gray-400 hover:text-white transition">Industries</a></li>
+                        <li><a href="methodology.html" class="text-gray-400 hover:text-white transition">Methodology</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Services -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Our Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="services.html#healthcare" class="text-gray-400 hover:text-white transition">Healthcare & Pharma Research</a></li>
+                        <li><a href="services.html#brand" class="text-gray-400 hover:text-white transition">Brand & Consumer Research</a></li>
+                        <li><a href="services.html#media" class="text-gray-400 hover:text-white transition">Media & Opinion Research</a></li>
+                        <li><a href="services.html#loyalty" class="text-gray-400 hover:text-white transition">Loyalty & CX Studies</a></li>
+                        <li><a href="services.html#survey" class="text-gray-400 hover:text-white transition">Survey Data Collection</a></li>
+                        <li><a href="services.html#analytics" class="text-gray-400 hover:text-white transition">Data Analytics</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Contact Info</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-primary mt-1 mr-3"></i>
+                            <span class="text-gray-400">47 A, Pandey Villa, Bharat Nagar, Lucknow – 226021, Uttar Pradesh, India</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone text-primary mr-3"></i>
+                            <a href="tel:+917007124727" class="text-gray-400 hover:text-white transition">+91 7007124727</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-primary mr-3"></i>
+                            <a href="mailto:info@revnotechresearch.com" class="text-gray-400 hover:text-white transition">info@revnotechresearch.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2023 Revnotech Research. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="privacy-policy.html" class="text-gray-400 hover:text-white text-sm transition">Privacy Policy</a>
+                    <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition">Terms & Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
